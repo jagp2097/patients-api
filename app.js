@@ -1,31 +1,34 @@
 const express = require('express')
 const app = express()
+const cors = require('cors')
 const port = 3000
+const sequelizeInstance = require('./sequelize/app')
 
-const Sequelize = require('sequelize')
+app.use(cors())
+app.use(express.json()) // for parsing application/json
+app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
-const connectionDatabase = async () => {
+const dataBaseConnection = async () => {
     try {
-        const sequelize = new Sequelize('patients_pcroject', 'sa', 'Chuyoso21', {
-            dialect: 'mssql',
-            host: 'localhost',
-        })
-
-        await sequelize.authenticate()
-        console.log('Connection has been established successfully.');
-        sequelize.close()
-    } catch(error) {
+        await sequelizeInstance.authenticate()
+        console.log('Connection has been established successfully.')
+        // sequelizeInstance.close()
+    } catch (error) {
         console.error('Unable to connect to the database.')
         console.error(`Error message: ${error.message}`)
     }
 }
 
-const init = async () => {
-    await connectionDatabase();
-    
+const init = () => {
+
+    dataBaseConnection()
+
+    app.use(require('./routes/api/users'))
+
     app.listen(port, () => {
         console.log(`Express server started on http://localhost:${port}`);
     })
+
 }
 
 init()
