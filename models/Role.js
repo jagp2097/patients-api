@@ -1,7 +1,8 @@
 const { DataTypes, Model } = require('sequelize')
+const sequelizeInstance = require('../sequelize/app')
+
 const User = require('./User')
 const RolesUsers = require('./RolesUsers')
-const sequelizeInstance = require('../sequelize/app')
 
 class Role extends Model {}
 
@@ -24,7 +25,5 @@ Role.init({
     timestamps: false,
     sequelize: sequelizeInstance
 })
-
-// Role.belongsToMany(User, { through: RolesUsers })
 
 module.exports = Role

@@ -27,14 +27,11 @@ RolesUsers.init({
         }
     }
 }, {
-    // Model oprtions
+    // Model options
     modelName: 'RolesUsers',
     tableName: 'RolesUsers',
     timestamps: false,
     sequelize: sequelizeInstance
 })
-
-// Role.belongsToMany(User, { through: RolesUsers })
-// User.belongsToMany(Role, { through: RolesUsers })
 
 module.exports = RolesUsers
