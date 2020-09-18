@@ -1,0 +1,13 @@
+/**
+ * Create a db.config.js file, copy this code and fill with your own information.
+ */
+
+const dbConfig = {
+    dbName: 'Your database name',
+    user: 'The username which is used to authenticate against the database',
+    password: 'The password which is used to authenticate against the database',
+    dialect: 'The dialect of the database you are connecting to. One of mysql, postgres, sqlite and mssql',
+    host: 'The host of the relational database.'
+}
+
+module.exports = dbConfig
