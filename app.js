@@ -1,7 +1,8 @@
 const express = require('express')
 const app = express()
-const cors = require('cors')
 const port = 3000
+
+const cors = require('cors')
 const sequelizeInstance = require('./sequelize/app')
 
 app.use(cors())
@@ -24,6 +25,7 @@ const init = () => {
     dataBaseConnection()
 
     app.use(require('./routes/api/users'))
+    app.use(require('./routes/api/roles'))
 
     app.listen(port, () => {
         console.log(`Express server started on http://localhost:${port}`);

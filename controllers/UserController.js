@@ -1,6 +1,4 @@
 const User = require('../models/User');
-const { user } = require('../sequelize/db.config');
-const { options } = require('../models/User');
 
 /**
  * Retrieve a listing of the User resource.
