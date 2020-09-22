@@ -21,7 +21,7 @@ router.get('/user/:userId', (req, res, next) => {
         if (user)
             res.status(200).json(user)
         else
-            res.status(404).send('User not found...')
+            res.status(404).send('User not found.')
     }).catch(error => {
         console.log(error);
         next(error)
