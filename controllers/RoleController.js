@@ -85,6 +85,8 @@ const deleteRole = async (roleId) => {
                 role_id: roleId
             }
         })
+        console.log(`The role with ID ${roleId} was deleted to the database!`)
+        return role
     } catch (error) {
         
     }

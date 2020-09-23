@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const userRoutes = require('../../controllers/UserController')
+const userRoutes = require('../controllers/UserController')
 
 // Get users
 router.get('/users', (req, res, next) => {
