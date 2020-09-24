@@ -9,6 +9,7 @@ const getAllUsers = async () => {
         return users
     } catch (error) {
         console.error(error);
+        return error
     }
 }
 
@@ -27,6 +28,7 @@ const getUserById = async (userId) => {
         return user
     } catch (error) {
         console.error(error)
+        return error
     }
 }
 
@@ -73,7 +75,8 @@ const updateUser = async (userId, username, password) => {
         })
         return user
     } catch (error) {
-        console.error(error);
+        console.error(error)
+        return error
     }
 }
 
@@ -92,7 +95,8 @@ const deleteUser = async (userId) => {
         console.log(`The user with ID ${userId} was deleted to the database!`)
         return user
     } catch (error) {
-        console.error(error);        
+        console.error(error)
+        return error 
     }
 }
 

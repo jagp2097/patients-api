@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const userRoutes = require('../../controllers/UserController')
+const userRoutes = require('../controllers/UserController')
 
 // Get users
 router.get('/users', (req, res, next) => {
@@ -55,7 +55,7 @@ router.post('/users', (req, res, next) => {
     }
 })
 
-// Update de specified user
+// Update the specified user
 router.put('/user/:userId', (req, res, next) => {
     const foundUser = userRoutes.getUserById(req.params.userId)
     const username = req.body.username
@@ -111,7 +111,7 @@ router.delete('/users/:userId', (req, res, next) => {
     .then(user => {
         res.status(200).json(user)
     }).catch(error => {
-        console.log(error)
+        console.error(error)
         next(error)
     })
 })

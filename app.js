@@ -24,8 +24,9 @@ const init = () => {
 
     dataBaseConnection()
 
-    app.use(require('./routes/api/users'))
-    app.use(require('./routes/api/roles'))
+    app.use(require('./routes/users'))
+    app.use(require('./routes/roles'))
+    app.use(require('./routes/patients'))
 
     app.listen(port, () => {
         console.log(`Express server started on http://localhost:${port}`);
