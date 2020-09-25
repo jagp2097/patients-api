@@ -27,4 +27,21 @@ Album.init({
     sequelize: sequelizeInstance
 })
 
+// Hooks
+Album.afterSave(async (instance, options) => {
+    if (options.transaction) {
+        options.transaction.afterCommit(() => console.log('Transaction commited.'))
+        return
+    }
+    console.log('Album saved to the database.')
+})  
+
+Album.afterBulkUpdate(async options => {
+    if (options.transaction) {
+        options.transaction.afterCommit(() => console.log('Transaction commited.'))
+        return
+    }
+    console.log('Album saved to the database.')
+})
+
 module.exports = Album
