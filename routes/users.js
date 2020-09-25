@@ -38,7 +38,7 @@ router.post('/users', (req, res, next) => {
     }
 
     else if (password === null || password === '' || password === undefined) {
-        res.status(400).send('Bad request: password not prodived.')
+        res.status(400).send('Bad request: password not provided.')
     }
 
     else {
