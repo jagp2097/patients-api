@@ -1,8 +1,7 @@
 const Album = require('../models/Album')
 
-const sequelize = require('sequelize')
-const t = await sequelize.transaction()
-
+const sequelizeInstance = require('../config/app')
+let transaction
 /**
  * Retrieve a listing of the Album instance.
  * 
@@ -10,17 +9,18 @@ const t = await sequelize.transaction()
  */
 const getAlbums = async (patientId) => {
     try {
+        transaction = await sequelizeInstance.transaction()
         const albums = await Album.findAll({
             where: {
                 patient_id: patientId
             },
-            transaction: t
-        })
-        await t.commit()
-        return albums
+            transaction: transaction
+       })
+       await transaction.commit()
+       return albums
     } catch (error) {   
         console.error(error)
-        await t.rollback()
+        await transaction.rollback()
         return error
     }
 }
@@ -33,18 +33,19 @@ const getAlbums = async (patientId) => {
  */
 const getAlbumById = async (patientId, albumId) => {
     try {
+        transaction = await sequelizeInstance.transaction()
         const album = await Album.findAll({
             where: {
                 patient_id: patientId,
                 album_id: albumId
             },
-            transaction: t
+            transaction: transaction            
         })
-        await t.commit()
+        await transaction.commit()
         return album
     } catch (error) {
         console.error(error)
-        await t.rollback()
+        await transaction.rollback()
         return error
     }
 }
@@ -57,19 +58,20 @@ const getAlbumById = async (patientId, albumId) => {
  */
 const createAlbum = async (patientId, albumName) => {
     try {
+        transaction = await sequelizeInstance.transaction()
         const album = Album.build({
             album_name: albumName,
             patient_id: patientId
         })
         await album.save({
-            transaction: t 
+            transaction: transaction        
         })
-        await t.commit()
+        await transaction.commit()
         console.log(`The album ${album.album_name} with ID ${album.album_id} was created for the patient with ID ${patientId} was saved to the database!`)
         return album
     } catch (error) {
         console.error(error)
-        await t.rollback()
+        await transaction.rollback()
         return error
     }
 }
@@ -82,23 +84,23 @@ const createAlbum = async (patientId, albumName) => {
  */
 const updateAlbum = async (albumId, albumName) => {
     try {
+        transaction = await sequelizeInstance.transaction()
         const album = await Album.update({
             album_name: albumName
         }, {
             where: {
                 album_id: albumId
             },
-            transaction: t
+            transaction: transaction
         })
-        await t.commit()
+        await transaction.commit()
         console.log(`The album with ID ${albumId} was updated to the database!`)
         return album
     } catch (error) {
         console.error(error)
-        await t.rollback()
+        await transaction.rollback()
         return error
     }
-
 }
 
 /**
@@ -108,18 +110,19 @@ const updateAlbum = async (albumId, albumName) => {
  */
 const deleteAlbum = async (albumId) => {
     try {
+        transaction = await sequelizeInstance.transaction()
         const album = await Album.destroy({
             where: {
                 album_id: albumId
             },
-            transaction: t
+            transaction: transaction
         })
-        await t.commit()
+        await transaction.commit()
         console.log(`The album with ID ${albumId} was deleted to the database!`)
         return album
     } catch (error) {
         console.error(error)
-        await t.rollback()
+        await transaction.rollback()
         return error
     }
 }

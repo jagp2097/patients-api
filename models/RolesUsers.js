@@ -1,7 +1,7 @@
 const { DataTypes, Model } = require('sequelize')
 const User = require('./User')
 const Role = require('./Role')
-const sequelizeInstance = require('../sequelize/app')
+const sequelizeInstance = require('../config/app')
 
 class RolesUsers extends Model {}
 
