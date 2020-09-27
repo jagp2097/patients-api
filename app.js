@@ -28,6 +28,7 @@ const init = () => {
     app.use(require('./routes/roles'))
     app.use(require('./routes/patients'))
     app.use(require('./routes/albums'))
+    app.use(require('./routes/regions'))
 
     app.listen(port, () => {
         console.log(`Express server started on http://localhost:${port}`);

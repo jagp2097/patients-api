@@ -2,6 +2,7 @@ const Album = require('../models/Album')
 
 const sequelizeInstance = require('../config/app')
 let transaction
+
 /**
  * Retrieve a listing of the Album instance.
  * 
