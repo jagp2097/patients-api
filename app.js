@@ -30,6 +30,7 @@ const init = () => {
     app.use(require('./routes/albums'))
     app.use(require('./routes/regions'))
     app.use(require('./routes/clinics'))
+    app.use(require('./routes/surgicalperiods'))
 
     app.listen(port, () => {
         console.log(`Express server started on http://localhost:${port}`);
