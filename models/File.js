@@ -10,6 +10,11 @@ File.init({
         autoIncrement: true,
         primaryKey: true
     },
+    file_name: {
+        type: DataTypes.STRING(120),
+        allowNull: false,
+        unique: true
+    },
     file_reference: {
         type: DataTypes.STRING(500),
         allowNull: false
