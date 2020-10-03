@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload image</title>
+</head>
+<body>
+    <form action="http://localhost:3000/patient/2/files" method="POST" enctype="multipart/form-data">
+        <input type="text" name="fileName" id="">
+        <input type="file" name="patient_file">
+        <input type="date" name="dateSurgery">
+        <input type="number" name="regionId" value="1">
+        <input type="number" name="clinicId" value="1">
+        <input type="number" name="periodId" value="1">
+        <input type="number" name="albumId">
+        <button type="submit">Enviar</button>
+    </form>
+</body>
+</html>

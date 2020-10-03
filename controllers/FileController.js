@@ -67,7 +67,7 @@ const createFile = async (fileName, fileReference, dateSurgery, patientId, regio
         const file = File.build({
             file_name: fileName,
             file_reference: fileReference,
-            date_surgery: dateSurgery,
+            date_surgery: new Date(dateSurgery).toISOString(),
             patient_id: patientId,
             region_id: regionId,
             clinic_id: clinicId,

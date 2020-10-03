@@ -88,7 +88,6 @@ router.put('/patient/:patientId/album/:albumId', (req, res, next) => {
     })
     .then(foundAlbum => {
         if (foundAlbum){
-console.log(foundAlbum);
             return albumRoutes.updateAlbum(foundAlbum[0].album_id, albumName)
         }
         

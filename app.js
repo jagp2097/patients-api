@@ -28,6 +28,7 @@ const init = () => {
     app.use(require('./routes/roles'))
     app.use(require('./routes/patients'))
     app.use(require('./routes/albums'))
+    app.use(require('./routes/files'))
     app.use(require('./routes/regions'))
     app.use(require('./routes/clinics'))
     app.use(require('./routes/surgicalperiods'))
