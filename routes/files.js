@@ -5,7 +5,6 @@ const multer = require('multer')
 const fileRoutes = require('../controllers/FileController')
 const patientRoutes = require('../controllers/PatientController')
 const fs = require('fs')
-const { request } = require('http')
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -55,8 +54,8 @@ router.get('/patient/:patientId/file/:fileName', (req, res, next) => {
     })
     .then(foundFile => {
         if (foundFile) {
-            res.status(200).json(foundFile[0])
-            // res.status(200).sendFile(`${path.join(path.dirname(require.main.filename), `/images/${foundFile[0].file_reference}`)}`)
+            res.status(200).json(foundFile)
+            // res.status(200).sendFile(`${path.join(path.dirname(require.main.filename), `/images/${foundFile.file_reference}`)}`)
         }
         else {
             res.status(404).format({
@@ -145,7 +144,7 @@ router.put('/patient/:patientId/file/:fileId', (req, res, next) => {
     })
     .then(foundFile => {
         if (foundFile)
-            return fileRoutes.updateFile(foundFile[0].file_id, fileName, dateSurgery, foundFile[0].patient_id, regionId, clinicId, periodId, albumId)
+            return fileRoutes.updateFile(foundFile.file_id, fileName, dateSurgery, foundFile.patient_id, regionId, clinicId, periodId, albumId)
 
         else {
             res.status(404).format({

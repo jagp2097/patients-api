@@ -34,7 +34,7 @@ const getFiles = async patientId => {
 const getFileByName = async (patientId, fileName) => {
     try {
         transaction = await sequelizeInstance.transaction()
-        const file = await File.findAll({
+        const file = await File.findOne({
             where: {
                 file_name: fileName,
                 patient_id: patientId
@@ -86,7 +86,6 @@ const getFileById = async (patientId, fileId) => {
  * @param {*} clinicId
  * @param {*} periodId
  * @param {*} albumId
- // $fileName = $request->input('file_name').time().'.'.$fileRetrive->extension();
  */
 
 const createFile = async (fileName, fileReference, dateSurgery, patientId, regionId, clinicId, periodId, albumId) => {
@@ -132,7 +131,6 @@ const updateFile = async (fileId, fileName, dateSurgery, patientId, regionId, cl
         transaction = await sequelizeInstance.transaction()
         const file = await File.update({
             file_name: fileName,
-            file_reference: fileReference,
             date_surgery: dateSurgery,
             region_id: regionId,
             clinic_id: clinicId,
