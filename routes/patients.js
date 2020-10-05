@@ -18,7 +18,7 @@ router.get('/patients', (req, res, next) => {
 
 // Get a specified patient
 router.get('/patient/:patientId', (req, res, next) => {
-    const patient = patientRoutes.getPatientById(req.body.patientId)
+    const patient = patientRoutes.getPatientById(req.params.patientId)
 
     patient.then(patient => {
         if (patient)

@@ -1,9 +1,11 @@
 const express = require('express')
+const path = require('path')
+
 const app = express()
 const port = 3000
 
 const cors = require('cors')
-const sequelizeInstance = require('./sequelize/app')
+const sequelizeInstance = require('./config/app')
 
 app.use(cors())
 app.use(express.json()) // for parsing application/json
@@ -24,9 +26,16 @@ const init = () => {
 
     dataBaseConnection()
 
+    app.use(express.static(path.join(path.dirname(require.main.filename), 'images')))
+
     app.use(require('./routes/users'))
     app.use(require('./routes/roles'))
     app.use(require('./routes/patients'))
+    app.use(require('./routes/albums'))
+    app.use(require('./routes/files'))
+    app.use(require('./routes/regions'))
+    app.use(require('./routes/clinics'))
+    app.use(require('./routes/surgicalperiods'))
 
     app.listen(port, () => {
         console.log(`Express server started on http://localhost:${port}`);

@@ -1,5 +1,5 @@
 const { DataTypes, Model } = require('sequelize')
-const sequelizeInstance = require('../sequelize/app')
+const sequelizeInstance = require('../config/app')
 
 class Patient extends Model {
     fullName(firstName, lastName) {

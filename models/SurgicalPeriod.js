@@ -1,26 +1,28 @@
 const { DataTypes, Model } = require('sequelize')
 const sequelizeInstance = require('../config/app')
 
-class Role extends Model {}
+class SurgicalPeriod extends Model {}
 
-Role.init({
+SurgicalPeriod.init({
     // Model attributes
-    role_id: {
+    period_id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
     },
-    role_name: {
-        type: DataTypes.STRING(30),
+    period_name: {
+        type: DataTypes.STRING(50),
         allowNull: false,
-        unique: true
+        validate: {
+            notEmpty: true
+        }
     }
 }, {
     // Model options
-    modelName: 'Role',
-    tableName: 'Roles',
+    modelName: 'SurgicalPeriod',
+    tableName: 'SurgicalPeriods',
     timestamps: false,
     sequelize: sequelizeInstance
 })
 
-module.exports = Role
+module.exports = SurgicalPeriod

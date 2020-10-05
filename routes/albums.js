@@ -28,7 +28,7 @@ router.get('/patient/:patientId/album/:albumId', (req, res, next) => {
 
     foundPatient.then(foundPatient => {
         if (foundPatient)
-            return albumRoutes.getAlbumById(req.params.albumId)
+            return albumRoutes.getAlbumById(foundPatient.patient_id, req.params.albumId)
         else
             res.status(404).send('Patient not found.')
     })
@@ -87,8 +87,9 @@ router.put('/patient/:patientId/album/:albumId', (req, res, next) => {
             res.status(404).send('Patient not found.')
     })
     .then(foundAlbum => {
-        if (foundAlbum)
-            return albumRoutes.updateAlbum(foundAlbum.album_id, albumName)
+        if (foundAlbum){
+            return albumRoutes.updateAlbum(foundAlbum[0].album_id, albumName)
+        }
         
         else 
             res.status(404).send('Album not found.')
@@ -114,7 +115,7 @@ router.delete('/patient/:patientId/albums/:albumId', (req, res, next) => {
     })
     .then(foundAlbum => {
         if (foundAlbum)
-            return albumRoutes.deleteAlbum(foundAlbum.album_id)
+            return albumRoutes.deleteAlbum(foundAlbum[0].album_id)
 
         else
             res.status(404).send('Album not found.')
@@ -129,3 +130,5 @@ router.delete('/patient/:patientId/albums/:albumId', (req, res, next) => {
 
 // Find patient
 const findPatient = patientId => patientRoutes.getPatientById(patientId)
+
+module.exports = router
