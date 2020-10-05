@@ -1,4 +1,6 @@
 const express = require('express')
+const path = require('path')
+
 const app = express()
 const port = 3000
 
@@ -23,6 +25,8 @@ const dataBaseConnection = async () => {
 const init = () => {
 
     dataBaseConnection()
+
+    app.use(express.static(path.join(path.dirname(require.main.filename), 'images')))
 
     app.use(require('./routes/users'))
     app.use(require('./routes/roles'))

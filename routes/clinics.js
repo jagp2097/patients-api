@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const clinicRoutes = require('../controllers/ClinicController')
 
-// Get regions
+// Get clinics
 router.get('/clinics', (req, res, next) => {
     const clinics = clinicRoutes.getClinics()
     clinics.then(clinics => {

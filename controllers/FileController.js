@@ -11,6 +11,9 @@ const getFiles = async patientId => {
     try {
         transaction = await sequelizeInstance.transaction()
         const files = await File.findAll({
+            where: {
+                patient_id: patientId
+            },
             transaction: transaction
         })
         await transaction.commit()
@@ -23,7 +26,7 @@ const getFiles = async patientId => {
 }
 
 /**
- * Retrieve a specified File.
+ * Retrieve a specified File by name.
  * 
  * @param {*} patientId
  * @param {*} fileName
@@ -34,6 +37,31 @@ const getFileByName = async (patientId, fileName) => {
         const file = await File.findAll({
             where: {
                 file_name: fileName,
+                patient_id: patientId
+            },
+            transaction: transaction
+        })
+        await transaction.commit()
+        return file
+    } catch (error) {
+        console.error(error)
+        await transaction.rollback()
+        return error
+    }
+}
+
+/**
+ * Retrieve a specified File by ID.
+ * 
+ * @param {*} patientId
+ * @param {*} fileId
+ */
+const getFileById = async (patientId, fileId) => {
+    try {
+        transaction = await sequelizeInstance.transaction()
+        const file = await File.findOne({
+            where: {
+                file_id: fileId,
                 patient_id: patientId
             },
             transaction: transaction
@@ -92,7 +120,6 @@ const createFile = async (fileName, fileReference, dateSurgery, patientId, regio
  * 
  * @param {*} fileId
  * @param {*} fileName
- * @param {*} fileReference
  * @param {*} date_surgery
  * @param {*} patientId
  * @param {*} regionId
@@ -100,21 +127,21 @@ const createFile = async (fileName, fileReference, dateSurgery, patientId, regio
  * @param {*} periodId
  * @param {*} albumId
  */
-const updateFile = async (fileName, fileReference, dateSurgery, patientId, regionId, clinicId, periodId, albumId) => {
+const updateFile = async (fileId, fileName, dateSurgery, patientId, regionId, clinicId, periodId, albumId) => {
     try {
         transaction = await sequelizeInstance.transaction()
         const file = await File.update({
             file_name: fileName,
             file_reference: fileReference,
             date_surgery: dateSurgery,
-            patient_id: patientId,
             region_id: regionId,
             clinic_id: clinicId,
             period_id: periodId,
             album_id: albumId // can be null, check if the param is null
         }, {
             where: {
-                file_id: fileId
+                file_id: fileId,
+                patient_id: patientId
             },
             transaction: transaction
         })
@@ -130,14 +157,16 @@ const updateFile = async (fileName, fileReference, dateSurgery, patientId, regio
 /**
  * Remove the specified File from storage.  
  * 
- * @param {*} fileId
+ * @param {*} patientId
+ * @param {*} fileName
  */
-const deleteFile = async fileId => {
+const deleteFile = async (patientId, fileId) => {
     try {
         transaction = await sequelizeInstance.transaction()
         const file = await File.destroy({
             where: {
-                file_id: fileId
+                file_id: fileId,
+                patient_id: patientId
             },
             transaction: transaction
         })
@@ -153,6 +182,7 @@ const deleteFile = async fileId => {
 module.exports = {
     getFiles,
     getFileByName,
+    getFileById,
     createFile,
     updateFile,
     deleteFile
