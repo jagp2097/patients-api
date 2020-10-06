@@ -1,5 +1,4 @@
 const SurgicalPeriod = require('../models/SurgicalPeriod')
-
 const sequelizeInstance = require('../config/app')
 let transaction
 
@@ -29,7 +28,7 @@ const getSurgicalPeriods = async () => {
 const getSurgicalPeriodById = async periodId => {
     try {
         transaction = await sequelizeInstance.transaction()
-        const period = await SurgicalPeriod.findAll({
+        const period = await SurgicalPeriod.findOne({
             where: {
                 period_id: periodId
             },

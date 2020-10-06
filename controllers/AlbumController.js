@@ -35,7 +35,7 @@ const getAlbums = async (patientId) => {
 const getAlbumById = async (patientId, albumId) => {
     try {
         transaction = await sequelizeInstance.transaction()
-        const album = await Album.findAll({
+        const album = await Album.findOne({
             where: {
                 patient_id: patientId,
                 album_id: albumId

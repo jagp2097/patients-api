@@ -1,5 +1,4 @@
 const Region = require('../models/Region')
-
 const sequelizeInstance = require('../config/app')
 let transaction
 
@@ -29,7 +28,7 @@ const getRegions = async () => {
 const getRegionById = async regionId => {
     try {
         transaction = await sequelizeInstance.transaction()
-        const region = await Region.findAll({
+        const region = await Region.findOne({
             where: {
                 region_id: regionId
             },

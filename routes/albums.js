@@ -11,13 +11,16 @@ router.get('/patient/:patientId/albums', (req, res, next) => {
         if (foundPatient) 
             return albumRoutes.getAlbums(foundPatient.patient_id)
     
-        else
-            res.status(404).send('Patient not found.')
+        else {
+            res.status(404).format({
+                'text/plain': () => res.send('Patient not found.')
+            })
+        }
     })
     .then(albums => {
         res.status(200).json(albums)
     }).catch(error => {
-        console.log(error)
+        console.error(error)
         next(error)
     })
 })
@@ -29,16 +32,22 @@ router.get('/patient/:patientId/album/:albumId', (req, res, next) => {
     foundPatient.then(foundPatient => {
         if (foundPatient)
             return albumRoutes.getAlbumById(foundPatient.patient_id, req.params.albumId)
-        else
-            res.status(404).send('Patient not found.')
+        else {
+            res.status(404).format({
+                'text/plain': () => res.send('Patient not found.')
+            })
+        }
     })
     .then(album => {
         if (album)
             res.status(200).json(album)
-        else
-            res.status(404).send('Album not found.')
+        else {
+            res.status(404).format({
+                'text/plain': () => res.send('Album not found.')
+            })
+        }
     }).catch(error => {
-        console.log(error)
+        console.error(error)
         next(error)
     })
 })
@@ -46,26 +55,35 @@ router.get('/patient/:patientId/album/:albumId', (req, res, next) => {
 // Create a new album
 router.post('/patient/:patientId/albums', (req, res, next) => {
     const foundPatient = findPatient(req.params.patientId)
-    const albumName = req.body.albumName
+    const albumName = req.body.albumName.trim()
 
     if (albumName === '' || albumName === undefined) {
-        res.status(400).send('Bad request: album name not provided.')
+        res.status(400).format({
+            'text/plain': () => res.send('Bad request: album name not provided.')
+        })
+        return
     }
 
     foundPatient.then(foundPatient => {
         if (foundPatient)
             return albumRoutes.createAlbum(foundPatient.patient_id, albumName)
         
-        else
-            res.status(404).send('Patient not found.')
+        else {
+            res.status(404).format({
+                'text/plain': () => res.send('Patient not found.')
+            })
+        }
     })
     .then(album => {
         if (album.errors) {
-            res.status(400).send(`Bad request: ${album.errors[0].message}`)
+            res.status(400).format({
+                'text/plain': () => res.send(`Bad request: ${album.errors[0].message}`)
+            })
+            return
         }
         res.status(201).json(album)
     }).catch(error => {
-        console.log(error)
+        console.error(error)
         next(error)
     })
 })
@@ -73,31 +91,40 @@ router.post('/patient/:patientId/albums', (req, res, next) => {
 // Update album
 router.put('/patient/:patientId/album/:albumId', (req, res, next) => {
     const foundPatient = findPatient(req.params.patientId)
-    const albumName = req.body.albumName
+    const albumName = req.body.albumName.trim()
     
     if (albumName === '' || albumName === undefined) {
-        res.status(400).send('Bad request: album name not provided.')
+        res.status(400).format({
+            'text/plain': () => res.send('Bad request: album name not provided.')
+        })
+        return
     }
 
     foundPatient.then(foundPatient => {
         if (foundPatient)
             return albumRoutes.getAlbumById(foundPatient.patient_id, req.params.albumId)
 
-        else
-            res.status(404).send('Patient not found.')
+        else {
+            res.status(404).format({
+                'text/plain': () => res.send('Patient not found.')
+            })
+        }
     })
     .then(foundAlbum => {
         if (foundAlbum){
-            return albumRoutes.updateAlbum(foundAlbum[0].album_id, albumName)
+            return albumRoutes.updateAlbum(foundAlbum.album_id, albumName)
         }
         
-        else 
-            res.status(404).send('Album not found.')
+        else {
+            res.status(404).format({
+                'text/plain': () => res.send('Album not found.')
+            })
+        }
     })
     .then(updatedAlbum => {
         res.status(201).json(updatedAlbum)
     }).catch(error => {
-        console.log(error)
+        console.error(error)
         next(error)
     })
 })
@@ -110,20 +137,26 @@ router.delete('/patient/:patientId/albums/:albumId', (req, res, next) => {
         if (foundPatient)
             return albumRoutes.getAlbumById(foundPatient.patient_id, req.params.albumId)
 
-        else
-            res.status(404).send('Patient not found.')
+        else {
+            res.status(404).format({
+                'text/plain': () => res.send('Patient not found.')
+            })
+        }
     })
     .then(foundAlbum => {
         if (foundAlbum)
-            return albumRoutes.deleteAlbum(foundAlbum[0].album_id)
+            return albumRoutes.deleteAlbum(foundAlbum.album_id)
 
-        else
-            res.status(404).send('Album not found.')
+        else {
+            res.status(404).format({
+                'text/plain': () => res.send('Album not found.')
+            })
+        }
     })
     .then(album => {
         res.status(200).json(album)
     }).catch(error => {
-        console.log(error)
+        console.error(error)
         next(error)
     })
 })

@@ -17,13 +17,11 @@ router.get('/surgical-periods', (req, res, next) => {
 router.get('/surgical-period/:periodId', (req, res, next) => {
     const period = periodRoutes.getSurgicalPeriodById(req.params.periodId)
     period.then(period => {
-        if (period.length !== 0)
+        if (period)
             res.status(200).json(period)
         else {
             res.status(404).format({
-                'application/json': () => {
-                    res.send('Surgical period not found.')
-                }
+                'application/json': () => res.send('Surgical period not found.')
             })
         }
     }).catch(error => {
@@ -38,9 +36,7 @@ router.post('/surgical-periods', (req, res, next) => {
 
     if (periodName === '' || periodName === undefined) {
         res.status(400).format({
-            'application/json': () => {
-                res.send('Bad request: surgical period name not provided.')
-            }
+            'application/json': () => res.send('Bad request: surgical period name not provided.')
         })
         return
     }
@@ -49,10 +45,9 @@ router.post('/surgical-periods', (req, res, next) => {
     period.then(period => {
         if (period.errors) {
             res.status(400).format({
-                'application/json': () => {
-                    res.send(`Bad request: ${period.errors[0].message}`)
-                }
+                'application/json': () => res.send(`Bad request: ${period.errors[0].message}`)
             })
+            return
         }
         res.status(201).json(period)
     }).catch(error => {
@@ -67,27 +62,24 @@ router.put('/surgical-period/:periodId', (req, res, next) => {
     const periodName = req.body.periodName.trim()
 
     foundPeriod.then(foundPeriod => {
-        if (foundPeriod.length !== 0) {
+        if (foundPeriod) {
 
             if (periodName === '' || periodName === undefined) {
                 res.status(400).format({
-                    'application/json': () => {
-                        res.send('Bad request: surgical period name not provided.')
-                    }
+                    'application/json': () => res.send('Bad request: surgical period name not provided.')
                 })      
                 return
             }
 
-            return periodRoutes.updateSurgicalPeriod(foundPeriod[0].period_id, periodName)
+            return periodRoutes.updateSurgicalPeriod(foundPeriod.period_id, periodName)
         }
     })
     .then(updatedPeriod => {
         if (updatedPeriod.error) {
             res.status(400).format({
-                'application/json': () => {
-                    res.send(`Bad request: ${updatedPeriod.errors[0].message}`)
-                }
+                'application/json': () => res.send(`Bad request: ${updatedPeriod.errors[0].message}`)
             })  
+            return
         }
         res.status(201).json(updatedPeriod)
     }).catch(error => {
@@ -101,13 +93,11 @@ router.delete('/surgical-periods/:periodId', (req, res, next) => {
     const foundPeriod = periodRoutes.getSurgicalPeriodById(req.params.periodId)
 
     foundPeriod.then(foundPeriod => {
-        if (foundPeriod.length !== 0)
-            return periodRoutes.deleteSurgicalPeriod(foundPeriod[0].period_id)
+        if (foundPeriod)
+            return periodRoutes.deleteSurgicalPeriod(foundPeriod.period_id)
         else {
-            res.status(400).format({
-                'application/json': () => {
-                    res.send('Surgical period not found.')
-                }
+            res.status(404).format({
+                'application/json': () => res.send('Surgical period not found.')
             })
         }
     })
