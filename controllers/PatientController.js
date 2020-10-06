@@ -1,14 +1,21 @@
 const Patient = require('../models/Patient')
+const sequelizeInstance = require('../config/app')
+let transaction
 
 /**
  * Retrieve a listing of the Patient resource.
  */
 const getPatients = async () => {
     try {
-        const patients = await Patient.findAll()
+        transaction = await sequelizeInstance.transaction()
+        const patients = await Patient.findAll({
+            transaction: transaction
+        })
+        await transaction.commit()
         return patients
     } catch (error) {
         console.error(error)
+        await transaction.rollback()
         return error
     }
 }
@@ -20,14 +27,18 @@ const getPatients = async () => {
  */
 const getPatientById = async (patientId) => {
     try {
+        transaction = await sequelizeInstance.transaction()
         const patient = await Patient.findOne({
             where: {
                 patient_id: patientId
-            }
+            },
+            transaction: transaction
         })
+        await transaction.commit()
         return patient
     } catch (error) {
         console.error(error)
+        await transaction.rollback()
         return error
     }
 }
@@ -42,16 +53,21 @@ const getPatientById = async (patientId) => {
  */
 const createPatient = async (firstName, lastName, birthday, email) => {
     try {
+        transaction = await sequelizeInstance.transaction()
         const patient = Patient.build({
             birthday: new Date(birthday).toISOString(),
             email: email
         })
         patient.patient_name = patient.fullName(firstName, lastName)
-        await patient.save()
+        await patient.save({
+            transaction: transaction
+        })
+        await transaction.commit()
         console.log(`The user ${patient.patient_name} with ID ${patient.patient_id} was saved to the database!`)
         return patient
     } catch (error) {
         console.error(error)
+        await transaction.rollback()
         return error
     }
 }
@@ -67,6 +83,7 @@ const createPatient = async (firstName, lastName, birthday, email) => {
  */
 const updatePatient = async (patientId, firstName, lastName, birthday, email) => {
     try {
+        transaction = await sequelizeInstance.transaction()
         let patient = new Patient()
         const fullName = patient.fullName(firstName, lastName)
         patient = await Patient.update({
@@ -76,11 +93,14 @@ const updatePatient = async (patientId, firstName, lastName, birthday, email) =>
         }, {
             where: {
                 patient_id: patientId
-            }
+            },
+            transaction: transaction
         })
+        await transaction.commit()
         return patient
     } catch (error) {
         console.error(error)
+        await transaction.rollback()
         return error
     }
 } 
@@ -92,14 +112,18 @@ const updatePatient = async (patientId, firstName, lastName, birthday, email) =>
  */
 const deletePatient = async (patientId) => {
     try {
+        transaction = await sequelizeInstance.transaction()
         const patient = await Patient.destroy({
             where: {
                 patient_id: patientId
-            }
+            },
+            transaction: transaction
         })
+        await transaction.commit()
         return patient
     } catch (error) {
         console.error(error)
+        await transaction.rollback()
         return error
     }
 }

@@ -20,8 +20,11 @@ router.get('/user/:userId', (req, res, next) => {
     user.then(user => {
         if (user)
             res.status(200).json(user)
-        else
-            res.status(404).send('User not found.')
+        else {
+            res.status(404).format({
+                'text/plain': () => res.send('User not found.')
+            })
+        }
     }).catch(error => {
         console.log(error);
         next(error)
@@ -30,22 +33,31 @@ router.get('/user/:userId', (req, res, next) => {
 
 // Create a new user
 router.post('/users', (req, res, next) => {
-    const username = req.body.username
-    const password = req.body.password
+    const username = req.body.username.trim()
+    const password = req.body.password.trim()
 
     if (username === null || username === '' || username === undefined) {
-        res.status(400).send('Bad request: username not provided.')
+        res.status(400).format({
+            'text/plain': () => res.send('Bad request: username not provided.')
+        })
+        return
     }
 
     else if (password === null || password === '' || password === undefined) {
-        res.status(400).send('Bad request: password not provided.')
+        res.status(400).format({
+            'text/plain': () => res.send('Bad request: password not provided.')
+        })
+        return
     }
 
     else {
         const user = userRoutes.createUser(username, password)
         user.then(newUser => {
             if (newUser.errors) {
-                res.status(400).send(`Bad request: ${newUser.errors[0].message}`)
+                res.status(400).format({
+                    'text/plain': () => res.send(`Bad request: ${newUser.errors[0].message}`)
+                })
+                return
             }
             res.status(201).json(newUser)
         }).catch(error => {
@@ -58,36 +70,51 @@ router.post('/users', (req, res, next) => {
 // Update the specified user
 router.put('/user/:userId', (req, res, next) => {
     const foundUser = userRoutes.getUserById(req.params.userId)
-    const username = req.body.username
-    const oldPassword = req.body.oldPassword
-    const newPassword = req.body.newPassword
+    const username = req.body.username.trim()
+    const oldPassword = req.body.oldPassword.trim()
+    const newPassword = req.body.newPassword.trim()
 
     foundUser.then(foundUser => {
         if (foundUser) {
            
             if (username === null || username === '' || username === undefined) {
-                res.status(400).send('Bad request: username not provided.')
+                res.status(400).format({
+                    'text/plain': () => res.send('Bad request: username not provided.')
+                })
+                return
             }
     
             if (oldPassword === null || oldPassword === '' || oldPassword === undefined) {
-                res.status(400).send('Bad request: old password not provided.')
+                res.status(400).format({
+                    'text/plain': () => res.send('Bad request: old password not provided.')
+                })
+                return
             }
 
             if (newPassword === null || newPassword === '' || newPassword === undefined) {
-                res.status(400).send('Bad request: new password not provided.')
+                res.status(400).format({
+                    'text/plain': () => res.send('Bad request: new password not provided.')
+                })
+                return
             }
 
             return foundUser.verifyPassword(oldPassword, foundUser.password)    
         }
     
-        else
-            res.status(404).send('User not found.')
+        else {
+            res.status(404).format({
+                'text/plain': () => res.send('User not found.')
+            })
+        }
     })
     .then(match => {
         if (match)
             return userRoutes.updateUser(req.params.userId, username, newPassword)
-        else 
-            res.status(400).send('Bad request: the new password does not match with the current password.')
+        else {
+            res.status(400).format({
+                'text/plain': () => res.send('Bad request: the new password does not match with the current password.')
+            })
+        }
     })
     .then(updatedUser => {
         res.status(201).json(updatedUser)
@@ -105,8 +132,11 @@ router.delete('/users/:userId', (req, res, next) => {
         if (foundUser)
             return userRoutes.deleteUser(foundUser.user_id)
     
-        else 
-            res.status(404).send('User not found.')
+        else {
+            res.status(404).format({
+                'text/plain': () => res.send('User not found.')
+            })
+        }
     })
     .then(user => {
         res.status(200).json(user)

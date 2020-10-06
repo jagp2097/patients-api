@@ -17,10 +17,13 @@ router.get('/regions', (req, res, next) => {
 router.get('/region/:regionId', (req, res, next) => {
     const region = regionRoutes.getRegionById(req.params.regionId)
     region.then(region => {
-        if (region.length !== 0) 
+        if (region) 
             res.status(200).json(region)
-        else
-            res.status(404).send('Region not found.')
+        else {
+            res.status(404).format({
+                'text/plain': () => res.send('Region not found.')
+            })
+        }
     }).catch(error => {
         console.error(error)
         next(error)
@@ -32,14 +35,19 @@ router.post('/regions', (req, res, next) => {
     const regionName = req.body.regionName.trim()
 
     if (regionName === '' || regionName === undefined) {
-        res.status(400).send('Bad request: region name not provided.')
+        res.status(400).format({
+            'text/plain': () => res.send('Bad request: region name not provided.')
+        })
         return
     }
 
     const region = regionRoutes.createRegion(regionName)
     region.then(region => {
         if (region.errors) {
-            res.status(400).send(`Bad request: ${region.errors[0].message}`)
+            res.status(400).format({
+                'text/plain': () => res.send(`Bad request: ${region.errors[0].message}`)
+            })
+            return
         }
         res.status(201).json(region)
     }).catch(error => {
@@ -54,22 +62,30 @@ router.put('/region/:regionId', (req, res, next) => {
     const regionName = req.body.regionName.trim()
 
     foundRegion.then(foundRegion => {
-        if (foundRegion.length !== 0) {
+        if (foundRegion) {
             
             if (regionName === '' || regionName === undefined) {
-                res.status(400).send('Bad request: region name not provided.')
+                res.status(400).format({
+                    'text/plain': () => res.send('Bad request: region name not provided.')
+                })
                 return
             }
 
-            return regionRoutes.updateRegion(foundRegion[0].region_id, regionName)
+            return regionRoutes.updateRegion(foundRegion.region_id, regionName)
         }
 
-        else
-            res.status(404).send('Region not found.')
+        else {
+            res.status(404).format({
+                'text/plain': () => res.send('Region not found.')
+            })
+        }
     })
     .then(updatedRegion => {
         if (updatedRegion.errors) {
-            res.status(400).send(`Bad request: ${updatedRegion.errors[0].message}`)
+            res.status(400).format({
+                'text/plain': () => res.send(`Bad request: ${region.errors[0].message}`)
+            })
+            return
         }
         res.status(201).json(updatedRegion)
     }).catch(error => {
@@ -83,12 +99,15 @@ router.delete('/regions/:regionId', (req, res, next) => {
     const foundRegion = regionRoutes.getRegionById(req.params.regionId)
 
     foundRegion.then(foundRegion => {
-        if (foundRegion.length !== 0) {
-            return regionRoutes.deleteRegion(foundRegion[0].region_id)
+        if (foundRegion) {
+            return regionRoutes.deleteRegion(foundRegion.region_id)
         }
         
-        else
-            res.status(404).send('Region not found.')
+        else {
+            res.status(404).format({
+                'text/plain': () => res.send('Region not found.')
+            })
+        }
     })
     .then(region => {
         res.status(200).json(region)

@@ -8,7 +8,7 @@ router.get('/roles', (req, res, next) => {
     roles.then(roles => {
         res.status(200).json(roles)
     }).catch(error => {
-        console.log(error)
+        console.error(error)
         next(error)
     })
 })
@@ -19,55 +19,65 @@ router.get('/role/:roleId', (req, res, next) => {
     role.then(role => {
         if (role) 
             res.status(200).json(role)
-        else 
-            res.status(404).send("Role not found.")
+        else {
+            res.status(404).format({
+                'text/plain': () => res.send('Role not found.')
+            })
+        }
     }).catch(error => {
-        console.log(error)
+        console.error(error)
         next(error)
     })
 })
 
 // Create a role
 router.post('/roles', (req, res, next) => {
-    const roleName = req.body.roleName
+    const roleName = req.body.roleName.trim()
 
     if (roleName === '' || roleName === undefined) {
-        res.status(400).send('Bad request: role name not provided.')
-    }
-
-    else {
-        const role = rolesRoutes.createRole(roleName)
-        role.then(role => {
-            res.status(201).json(role)
-        }).catch(error => {
-            console.log(error)
-            next(error)
+        res.status(400).format({
+            'text/plain': () => res.send('Bad request: role name not provided.')
         })
+        return
     }
 
+    const role = rolesRoutes.createRole(roleName)
+    role.then(role => {
+        res.status(201).json(role)
+    }).catch(error => {
+        console.error(error)
+        next(error)
+    })
 })
 
 // Update the specified role
 router.put('/role/:roleId', (req, res, next) => {
     const foundRole = rolesRoutes.getRoleById(req.params.roleId)
-    const roleName = req.body.roleName
+    const roleName = req.body.roleName.trim()
 
     foundRole.then(foundRole => {
         if (foundRole) {
             
             if (roleName === '' || roleName === undefined) {
-                res.status(400).send('Bad request: role name not provided.')
+                res.status(400).format({
+                    'text/plain': () => res.send('Bad request: role name not provided.')
+                })
+                return
             }
             
             return rolesRoutes.updateRole(foundRole.role_id, roleName)
         }
-        else
-            res.send(404).send('Role not found.')
+        else {
+            res.status(404).format({
+                'text/plain': () => res.send('Role not found.')
+            })
+            return
+        }
     })
     .then(updatedRole => {
         res.status(201).json(updatedRole)
     }).catch(error => {
-        console.log(error)
+        console.error(error)
         next(error)
     })
 
@@ -80,8 +90,11 @@ router.delete('/roles/:roleId', (req, res, next) => {
     foundRole.then(foundRole => {
         if (foundRole)
             return rolesRoutes.deleteRole(foundRole.role_id)
-        else
-            res.status(404).send('Role not found.')
+        else {
+            res.status(404).format({
+                'text/plain': () => res.send('Role not found.')
+            })
+        }
     })
     .then(role => {
         res.status(200).json(role)

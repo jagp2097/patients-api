@@ -29,7 +29,7 @@ const getClinics = async () => {
 const getClinicById = async clinicId => {
     try {
         transaction = await sequelizeInstance.transaction()
-        const clinic = await Clinic.findAll({
+        const clinic = await Clinic.findOne({
             where: {
                 clinic_id: clinicId
             },
