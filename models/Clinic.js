@@ -26,3 +26,11 @@ Clinic.init({
 })
 
 module.exports = Clinic
+
+const File = require('./File')
+
+Clinic.hasMany(File, {
+    foreignKey: {
+        name: 'clinic_id'
+    }
+})

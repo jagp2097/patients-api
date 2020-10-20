@@ -4,10 +4,28 @@ let transaction
 
 /**
  * Retrieve a listing of the File resource.
+ */
+const getFiles = async () => {
+    try {
+        transaction = await sequelizeInstance.transaction()
+        const files = await File.findAll({
+            transaction: transaction
+        })
+        await transaction.commit()
+        return files
+    } catch (error) {
+        console.error(error)
+        await transaction.rollback()
+        return error
+    }
+}
+
+/**
+ * Retrieve a specified File by patient.
  * 
  * @param {*} patientId
  */
-const getFiles = async patientId => {
+const getFilesByPatient = async patientId => {
     try {
         transaction = await sequelizeInstance.transaction()
         const files = await File.findAll({
@@ -179,6 +197,7 @@ const deleteFile = async (patientId, fileId) => {
 
 module.exports = {
     getFiles,
+    getFilesByPatient,
     getFileByName,
     getFileById,
     createFile,

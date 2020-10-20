@@ -26,3 +26,11 @@ Region.init({
 })
 
 module.exports = Region
+
+const File = require('./File')
+
+Region.hasMany(File, {
+    foreignKey: {
+        name: 'region_id'
+    },
+})
