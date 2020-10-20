@@ -40,3 +40,17 @@ Patient.init({
 })
 
 module.exports = Patient
+
+const File = require('./File')
+const Album = require('./Album')
+
+Patient.hasMany(File, {
+    foreignKey: {
+        name: 'patient_id'
+    }
+})
+Patient.hasMany(Album, {
+    foreignKey: {
+        name: 'patient_id'
+    }
+})

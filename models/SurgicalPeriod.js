@@ -26,3 +26,9 @@ SurgicalPeriod.init({
 })
 
 module.exports = SurgicalPeriod
+
+const File = require('./File')
+
+SurgicalPeriod.hasMany(File, {
+    foreignKey: 'period_id'
+})

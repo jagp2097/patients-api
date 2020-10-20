@@ -45,3 +45,18 @@ Album.afterBulkUpdate(async options => {
 })
 
 module.exports = Album
+
+const Patient = require('./Patient')
+const File = require('./File')
+
+Album.hasMany(File, {
+    foreignKey: {
+        name: 'album_id'
+    }
+})
+Album.belongsTo(Patient, {
+    foreignKey: {
+        name: 'patient_id'
+    },
+    targetKey: 'patient_id'
+})

@@ -52,3 +52,40 @@ File.init({
 })
 
 module.exports = File
+
+const SurgicalPeriod = require('./SurgicalPeriod')
+const Patient = require('./Patient')
+const Album = require('./Album')
+const Region = require('./Region')
+const Clinic = require('./Clinic')
+
+File.belongsTo(SurgicalPeriod, {
+    foreignKey: {
+        name: 'period_id'
+    },
+    targetKey: 'period_id'
+})
+File.belongsTo(Patient, {
+    foreignKey: {
+        name: 'patient_id'
+    },
+    targetKey: 'patient_id'
+})
+File.belongsTo(Album, {
+    foreignKey: {
+        name: 'album_id'
+    },
+    targetKey: 'album_id'
+})
+File.belongsTo(Clinic, {
+    foreignKey: {
+        name: 'clinic_id'
+    },
+    targetKey: 'clinic_id'
+})
+File.belongsTo(Region, {
+    foreignKey: {
+        name: 'region_id'
+    },
+    targetKey: 'region_id'
+})

@@ -2,9 +2,6 @@ const { DataTypes, Model } = require('sequelize')
 const sequelizeInstance = require('../config/app')
 const bcrypt = require('bcrypt')
 
-const Role = require('./Role')
-const RolesUsers = require('./RolesUsers')
-
 class User extends Model {
     async verifyPassword(plainPassword, hashedPassword) {
         return await bcrypt.compare(plainPassword, hashedPassword)
@@ -66,3 +63,6 @@ const encryptPassword = async (password) => {
 }
 
 module.exports = User
+
+const Role = require('./Role')
+const RolesUsers = require('./RolesUsers')

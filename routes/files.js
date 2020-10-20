@@ -19,6 +19,18 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 
 // Get files
+router.get('/files', (req, res, next) => {
+    const files = fileRoutes.getFiles()
+
+    files.then(files => {
+        res.status(200).json(files)
+    }).catch(error => {
+        console.error(error)
+        next(error)
+    })
+})
+
+// Get files by patient
 router.get('/patient/:patientId/files', (req, res, next) => {
     const foundPatient = patientRoutes.getPatientById(req.params.patientId)
 
