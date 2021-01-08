@@ -13,68 +13,68 @@ Patients RESTful API. An RESTful API created just for my own educational purpose
 ## API Endpoints
 
 ### Users
-- Get all the users.
+- Get all the users.  
     `(GET) http://localhost:3008/api/users`
 
-- Get a user specifying the :userId.
+- Get a user specifying the :userId.  
     `(GET) http://localhost:3008/api/user/:userId`
 
-- Create a new user.
+- Create a new user.  
     `(POST) http://localhost:3008/api/users`
 
-- Update a user specifying the :userId.
+- Update a user specifying the :userId.  
     `(PUT) http://localhost:3008/api/user/:userId`
 
-- Delete a user specifying the :userId. 
+- Delete a user specifying the :userId.   
     `(DELETE) http://localhost:3008/api/users/:userId`
 
 ### Patients
-- Get all the patients.
+- Get all the patients.  
     `(GET) http://localhost:3008/api/patients`
 
-- Get a user specifying the :patientId.
+- Get a user specifying the :patientId.  
     `(GET) http://localhost:3008/api/patient/:patientId`
 
-- Create a new patient.
+- Create a new patient.  
     `(POST) http://localhost:3008/api/patients`
 
-- Update a patient specifying the :patientId.
+- Update a patient specifying the :patientId.  
     `(PUT) http://localhost:3008/api/patient/:patientId`
 
-- Delete a patient specifying the :patientId. 
+- Delete a patient specifying the :patientId.   
     `(DELETE) http://localhost:3008/api/patients/:patientId`
 
 ### Albums
-- Get all the albums owned by the :patientId.
+- Get all the albums owned by the :patientId.  
     `(GET) http://localhost:3008/api/patient/:patientId/albums`
 
-- Get a album specifying the :albumId owned by :patientId.
+- Get a album specifying the :albumId owned by :patientId.  
     `(GET) http://localhost:3008/api/patient/:patientId/album/:albumId`
 
-- Create a new album for the :patientId.
+- Create a new album for the :patientId.  
     `(POST) http://localhost:3008/api/patient/:patientId/albums`
 
-- Update an album owned by the specified :patientId.
+- Update an album owned by the specified :patientId.  
     `(PUT) http://localhost:3008/api/patient/:patientId/album/:albumId`
 
-- Delete an album owned by the specified :patientId. 
+- Delete an album owned by the specified :patientId.  
     `(DELETE) http://localhost:3008/api/patient/:patientId/albums/:albumId`
 
 ### Files
-- Get all images.
+- Get all images.  
     `(GET) http://localhost:3008/api/files`
 
-- Get all the images owned by the :patientId.
+- Get all the images owned by the :patientId.  
     `(GET) http://localhost:3008/api/patient/:patientId/files`
 
-- Get an image owned by the :patientId specifying the image name.
+- Get an image owned by the :patientId specifying the image name.  
     `(GET) http://localhost:3008/api/patient/:patientId/file/:fileName`
 
-- Upload a new image for the :patientId. Use a UI for this endpoint. A filename it's required.
+- Upload a new image for the :patientId. Use a UI for this endpoint. A filename it's required.  
     `(POST) http://localhost:3008/api/patient/:patientId/files`
 
-- Update a image owned by the specified :patientId.
+- Update a image owned by the specified :patientId.  
     `(PUT) http://localhost:3008/api/patient/:patientId/file/:fileId`
 
-- Delete an image owned by the specified :patientId. 
+- Delete an image owned by the specified :patientId.  
     `(DELETE) http://localhost:3008/api/patient/:patientId/files/:fileId`
