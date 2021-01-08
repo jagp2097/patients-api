@@ -8,7 +8,7 @@ Patients RESTful API. An RESTful API created just for my own educational purpose
 3. Open a terminal, go to the repository folder and execute `npm install` to install all the dependencies.
 4. Create a file inside the ___config___ folder and call it ___db.config.js___. 
 5. Copy the code of the ___db.config.example___ file from the ___config___ folder and copy it into your ___db.config.js___ file. Then fill it with your own data. 
-6. In a terminal run `node app.js` to run the API.
+6. In a terminal, go to the project folder and execute `node app.js` command to run the API.
 
 ## API Endpoints
 
