@@ -2,9 +2,10 @@ const express = require('express')
 const router = express.Router()
 const albumRoutes = require('../controllers/AlbumController')
 const patientRoutes = require('../controllers/PatientController')
+const isAuth = require('../middlewares/is-auth')
 
 // Get albums
-router.get('/patient/:patientId/albums', (req, res, next) => {
+router.get('/patient/:patientId/albums', isAuth, (req, res, next) => {
     const foundPatient = findPatient(req.params.patientId)
 
     foundPatient.then(foundPatient => {
@@ -26,7 +27,7 @@ router.get('/patient/:patientId/albums', (req, res, next) => {
 })
 
 // Get a specified album
-router.get('/patient/:patientId/album/:albumId', (req, res, next) => {
+router.get('/patient/:patientId/album/:albumId', isAuth, (req, res, next) => {
     const foundPatient = findPatient(req.params.patientId)
 
     foundPatient.then(foundPatient => {
@@ -53,7 +54,7 @@ router.get('/patient/:patientId/album/:albumId', (req, res, next) => {
 })
 
 // Create a new album
-router.post('/patient/:patientId/albums', (req, res, next) => {
+router.post('/patient/:patientId/albums', isAuth, (req, res, next) => {
     const foundPatient = findPatient(req.params.patientId)
     const albumName = req.body.albumName.trim()
 
@@ -89,7 +90,7 @@ router.post('/patient/:patientId/albums', (req, res, next) => {
 })
 
 // Update album
-router.put('/patient/:patientId/album/:albumId', (req, res, next) => {
+router.put('/patient/:patientId/album/:albumId', isAuth, (req, res, next) => {
     const foundPatient = findPatient(req.params.patientId)
     const albumName = req.body.albumName.trim()
     
@@ -130,7 +131,7 @@ router.put('/patient/:patientId/album/:albumId', (req, res, next) => {
 })
 
 // Delete a specified album
-router.delete('/patient/:patientId/albums/:albumId', (req, res, next) => {
+router.delete('/patient/:patientId/albums/:albumId', isAuth, (req, res, next) => {
     const foundPatient = findPatient(req.params.patientId)
 
     foundPatient.then(foundPatient => {

@@ -1,9 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const userRoutes = require('../controllers/UserController')
+const isAuth = require('../middlewares/is-auth')
 
 // Get users
-router.get('/users', (req, res, next) => {
+router.get('/users', isAuth, (req, res, next) => {
     const users = userRoutes.getAllUsers()
     
     users.then(users => {
@@ -15,7 +16,7 @@ router.get('/users', (req, res, next) => {
 })
 
 // Get a specified user
-router.get('/user/:userId', (req, res, next) => {
+router.get('/user/:userId', isAuth, (req, res, next) => {
     const user = userRoutes.getUserById(req.params.userId)
     user.then(user => {
         if (user)
@@ -32,7 +33,7 @@ router.get('/user/:userId', (req, res, next) => {
 })
 
 // Create a new user
-router.post('/users', (req, res, next) => {
+router.post('/users', isAuth, (req, res, next) => {
     const username = req.body.username.trim()
     const password = req.body.password.trim()
 
@@ -68,7 +69,7 @@ router.post('/users', (req, res, next) => {
 })
 
 // Update the specified user
-router.put('/user/:userId', (req, res, next) => {
+router.put('/user/:userId', isAuth, (req, res, next) => {
     const foundUser = userRoutes.getUserById(req.params.userId)
     const username = req.body.username.trim()
     const oldPassword = req.body.oldPassword.trim()
@@ -125,7 +126,7 @@ router.put('/user/:userId', (req, res, next) => {
 })
 
 // Delete a specified user
-router.delete('/users/:userId', (req, res, next) => {
+router.delete('/users/:userId', isAuth, (req, res, next) => {
     const foundUser = userRoutes.getUserById(req.params.userId)
 
     foundUser.then(foundUser => {

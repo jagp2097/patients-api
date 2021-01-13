@@ -1,9 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const periodRoutes = require('../controllers/SurgicalPeriodController')
+const isAuth = require('../middlewares/is-auth')
 
 // Get surgical periods
-router.get('/surgical-periods', (req, res, next) => {
+router.get('/surgical-periods', isAuth, (req, res, next) => {
     const periods = periodRoutes.getSurgicalPeriods()
     periods.then(periods => {
         res.status(200).json(periods)
@@ -14,7 +15,7 @@ router.get('/surgical-periods', (req, res, next) => {
 })
 
 // Get a specified surgical period
-router.get('/surgical-period/:periodId', (req, res, next) => {
+router.get('/surgical-period/:periodId', isAuth, (req, res, next) => {
     const period = periodRoutes.getSurgicalPeriodById(req.params.periodId)
     period.then(period => {
         if (period)
@@ -31,7 +32,7 @@ router.get('/surgical-period/:periodId', (req, res, next) => {
 })
 
 // Create a new surgical period
-router.post('/surgical-periods', (req, res, next) => {
+router.post('/surgical-periods', isAuth, (req, res, next) => {
     const periodName = req.body.periodName.trim()
 
     if (periodName === '' || periodName === undefined) {
@@ -57,7 +58,7 @@ router.post('/surgical-periods', (req, res, next) => {
 })
 
 // Update the specified surgery period
-router.put('/surgical-period/:periodId', (req, res, next) => {
+router.put('/surgical-period/:periodId', isAuth, (req, res, next) => {
     const foundPeriod = periodRoutes.getSurgicalPeriodById(req.params.periodId)
     const periodName = req.body.periodName.trim()
 
@@ -89,7 +90,7 @@ router.put('/surgical-period/:periodId', (req, res, next) => {
 })
 
 // Delete a specified surgical period
-router.delete('/surgical-periods/:periodId', (req, res, next) => {
+router.delete('/surgical-periods/:periodId', isAuth, (req, res, next) => {
     const foundPeriod = periodRoutes.getSurgicalPeriodById(req.params.periodId)
 
     foundPeriod.then(foundPeriod => {

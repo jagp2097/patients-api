@@ -4,12 +4,13 @@ const path = require('path')
 const app = express()
 const port = 3008
 
-const cors = require('cors')
 const sequelizeInstance = require('./config/app')
 
-app.use(cors())
+// app.use(cors())
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+
+app.use(express.static(path.join(path.dirname(require.main.filename), 'images')))
 
 const dataBaseConnection = async () => {
     try {
@@ -26,8 +27,16 @@ const init = () => {
 
     dataBaseConnection()
 
-    app.use(express.static(path.join(path.dirname(require.main.filename), 'images')))
+    // Enable CORS
+    // This middleware sets the neccesary headers to the incoming request to enable CORS
+    app.use((req, res, next) => {
+        res.setHeader('Access-Control-Allow-Origin', '*')
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE')
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+        next()
+    }) 
 
+    app.use('/api', require('./routes/auth'))
     app.use('/api', require('./routes/users'))
     app.use('/api', require('./routes/roles'))
     app.use('/api', require('./routes/patients'))

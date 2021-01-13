@@ -1,9 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const clinicRoutes = require('../controllers/ClinicController')
+const isAuth = require('../middlewares/is-auth')
 
 // Get clinics
-router.get('/clinics', (req, res, next) => {
+router.get('/clinics', isAuth, (req, res, next) => {
     const clinics = clinicRoutes.getClinics()
     clinics.then(clinics => {
         res.status(200).json(clinics)
@@ -14,7 +15,7 @@ router.get('/clinics', (req, res, next) => {
 })
 
 // Get a specified clinic
-router.get('/clinic/:clinicId', (req, res, next) => {
+router.get('/clinic/:clinicId', isAuth, (req, res, next) => {
     const clinic = clinicRoutes.getClinicById(req.params.clinicId)
     clinic.then(clinic => {
         if (clinic) 
@@ -31,7 +32,7 @@ router.get('/clinic/:clinicId', (req, res, next) => {
 })
 
 // Create a new clinic
-router.post('/clinics', (req, res, next) => {
+router.post('/clinics', isAuth, (req, res, next) => {
     const clinicName = req.body.clinicName.trim()
 
     if (clinicName === '' || clinicName === undefined) {
@@ -57,7 +58,7 @@ router.post('/clinics', (req, res, next) => {
 })
 
 // Update the specified clinic
-router.put('/clinic/:clinicId', (req, res, next) => {
+router.put('/clinic/:clinicId', isAuth, (req, res, next) => {
     const foundClinic = clinicRoutes.getClinicById(req.params.clinicId)
     const clinicName = req.body.clinicName.trim()
 
@@ -95,7 +96,7 @@ router.put('/clinic/:clinicId', (req, res, next) => {
 })
 
 // Delete a specified clinic
-router.delete('/clinics/:clinicId', (req, res, next) => {
+router.delete('/clinics/:clinicId', isAuth, (req, res, next) => {
     const foundClinic = clinicRoutes.getClinicById(req.params.clinicId)
 
     foundClinic.then(foundClinic => {

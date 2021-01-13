@@ -1,9 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const rolesRoutes = require('../controllers/RoleController')
+const isAuth = require('../middlewares/is-auth')
 
 // Get roles
-router.get('/roles', (req, res, next) => {
+router.get('/roles', isAuth, (req, res, next) => {
     const roles = rolesRoutes.getRoles()
     roles.then(roles => {
         res.status(200).json(roles)
@@ -14,7 +15,7 @@ router.get('/roles', (req, res, next) => {
 })
 
 // Get a specified role
-router.get('/role/:roleId', (req, res, next) => {
+router.get('/role/:roleId', isAuth, (req, res, next) => {
     const role = rolesRoutes.getRoleById(req.params.roleId)
     role.then(role => {
         if (role) 
@@ -31,7 +32,7 @@ router.get('/role/:roleId', (req, res, next) => {
 })
 
 // Create a role
-router.post('/roles', (req, res, next) => {
+router.post('/roles', isAuth, (req, res, next) => {
     const roleName = req.body.roleName.trim()
 
     if (roleName === '' || roleName === undefined) {
@@ -51,7 +52,7 @@ router.post('/roles', (req, res, next) => {
 })
 
 // Update the specified role
-router.put('/role/:roleId', (req, res, next) => {
+router.put('/role/:roleId', isAuth, (req, res, next) => {
     const foundRole = rolesRoutes.getRoleById(req.params.roleId)
     const roleName = req.body.roleName.trim()
 
@@ -84,7 +85,7 @@ router.put('/role/:roleId', (req, res, next) => {
 })
 
 // Delete the specified Role
-router.delete('/roles/:roleId', (req, res, next) => {
+router.delete('/roles/:roleId', isAuth, (req, res, next) => {
     const foundRole = rolesRoutes.getRoleById(req.params.roleId)
 
     foundRole.then(foundRole => {

@@ -5,6 +5,7 @@ const multer = require('multer')
 const fileRoutes = require('../controllers/FileController')
 const patientRoutes = require('../controllers/PatientController')
 const fs = require('fs')
+const isAuth = require('../middlewares/is-auth')
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -19,7 +20,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 
 // Get files
-router.get('/files', (req, res, next) => {
+router.get('/files', isAuth, (req, res, next) => {
     const files = fileRoutes.getFiles()
 
     files.then(files => {
@@ -31,7 +32,7 @@ router.get('/files', (req, res, next) => {
 })
 
 // Get files by patient
-router.get('/patient/:patientId/files', (req, res, next) => {
+router.get('/patient/:patientId/files', isAuth, (req, res, next) => {
     const foundPatient = patientRoutes.getPatientById(req.params.patientId)
 
     foundPatient.then(foundPatient => {
@@ -52,7 +53,7 @@ router.get('/patient/:patientId/files', (req, res, next) => {
 })
 
 // Get a specified file
-router.get('/patient/:patientId/file/:fileName', (req, res, next) => {
+router.get('/patient/:patientId/file/:fileName', isAuth, (req, res, next) => {
     const foundPatient = patientRoutes.getPatientById(req.params.patientId)
 
     foundPatient.then(foundPatient => {
@@ -81,7 +82,7 @@ router.get('/patient/:patientId/file/:fileName', (req, res, next) => {
 })
 
 // Create a new file
-router.post('/patient/:patientId/files', upload.single('patient_file'), (req, res, next) => {
+router.post('/patient/:patientId/files', isAuth, upload.single('patient_file'), (req, res, next) => {
     const foundPatient = patientRoutes.getPatientById(req.params.patientId)
     const fileName = req.body.fileName.trim()
     const dateSurgery = req.body.dateSurgery.trim()
@@ -124,7 +125,7 @@ router.post('/patient/:patientId/files', upload.single('patient_file'), (req, re
 })
 
 // Update the specified file
-router.put('/patient/:patientId/file/:fileId', (req, res, next) => {
+router.put('/patient/:patientId/file/:fileId', isAuth, (req, res, next) => {
     const foundPatient = patientRoutes.getPatientById(req.params.patientId)
     const fileName = req.body.fileName.trim()
     const dateSurgery = req.body.dateSurgery.trim()
@@ -177,7 +178,7 @@ router.put('/patient/:patientId/file/:fileId', (req, res, next) => {
 })
 
 // Delete a specified file
-router.delete('/patient/:patientId/files/:fileId', (req, res, next) => {
+router.delete('/patient/:patientId/files/:fileId', isAuth, (req, res, next) => {
     const foundPatient = patientRoutes.getPatientById(req.params.patientId)
     
     foundPatient.then(foundPatient => {

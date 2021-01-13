@@ -1,9 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const regionRoutes = require('../controllers/RegionController')
+const isAuth = require('../middlewares/is-auth')
 
 // Get regions
-router.get('/regions', (req, res, next) => {
+router.get('/regions', isAuth, (req, res, next) => {
     const regions = regionRoutes.getRegions()
     regions.then(regions => {
         res.status(200).json(regions)
@@ -14,7 +15,7 @@ router.get('/regions', (req, res, next) => {
 })
 
 // Get a specified region
-router.get('/region/:regionId', (req, res, next) => {
+router.get('/region/:regionId', isAuth, (req, res, next) => {
     const region = regionRoutes.getRegionById(req.params.regionId)
     region.then(region => {
         if (region) 
@@ -31,7 +32,7 @@ router.get('/region/:regionId', (req, res, next) => {
 })
 
 // Create a new region
-router.post('/regions', (req, res, next) => {
+router.post('/regions', isAuth, (req, res, next) => {
     const regionName = req.body.regionName.trim()
 
     if (regionName === '' || regionName === undefined) {
@@ -57,7 +58,7 @@ router.post('/regions', (req, res, next) => {
 })
 
 // Update the specified region
-router.put('/region/:regionId', (req, res, next) => {
+router.put('/region/:regionId', isAuth, (req, res, next) => {
     const foundRegion = regionRoutes.getRegionById(req.params.regionId)
     const regionName = req.body.regionName.trim()
 
@@ -95,7 +96,7 @@ router.put('/region/:regionId', (req, res, next) => {
 })
 
 // Delete a specified region
-router.delete('/regions/:regionId', (req, res, next) => {
+router.delete('/regions/:regionId', isAuth, (req, res, next) => {
     const foundRegion = regionRoutes.getRegionById(req.params.regionId)
 
     foundRegion.then(foundRegion => {

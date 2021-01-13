@@ -1,9 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const patientRoutes = require('../controllers/PatientController')
+const isAuth = require('../middlewares/is-auth')
 
 // Get patients
-router.get('/patients', (req, res, next) => {
+router.get('/patients', isAuth, (req, res, next) => {
     const patients = patientRoutes.getPatients()
     
     patients.then(patients => {
@@ -15,7 +16,7 @@ router.get('/patients', (req, res, next) => {
 })
 
 // Get a specified patient
-router.get('/patient/:patientId', (req, res, next) => {
+router.get('/patient/:patientId', isAuth, (req, res, next) => {
     const patient = patientRoutes.getPatientById(req.params.patientId)
 
     patient.then(patient => {
@@ -33,7 +34,7 @@ router.get('/patient/:patientId', (req, res, next) => {
 })
 
 // Create a new patient
-router.post('/patients', (req, res, next) => {
+router.post('/patients', isAuth, (req, res, next) => {
     const firstName = req.body.firstName.trim()
     const lastName = req.body.lastName.trim()
     const birthday = req.body.birthday.trim()
@@ -83,7 +84,7 @@ router.post('/patients', (req, res, next) => {
 })
 
 // Update the specified patient
-router.put('/patient/:patientId', (req, res, next) => {
+router.put('/patient/:patientId', isAuth, (req, res, next) => {
     const foundPatient = patientRoutes.getPatientById(req.params.patientId)
     const firstName = req.body.firstName.trim()
     const lastName = req.body.lastName.trim()
@@ -141,7 +142,7 @@ router.put('/patient/:patientId', (req, res, next) => {
 })
 
 // Delete a specified patient
-router.delete('/patients/:patientId', (req, res, next) => {
+router.delete('/patients/:patientId', isAuth, (req, res, next) => {
     const foundPatient = patientRoutes.getPatientById(req.params.patientId)
 
     foundPatient.then(foundPatient => {
